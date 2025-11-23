@@ -11,9 +11,9 @@ const api = axios.create({
 })
 
 const send = async (message) => {
-    const messages = `Bertindaklah sebagai pakar cek fakta independen. Analisis informasi berikut secara menyeluruh dan tentukan keakuratannya. Gunakan minimal dua sumber terpercaya dan berikan tautannya: ${message}. Berikan respons nya dalam bentuk html dan jangan berikan tanda kutip. tambahkan emoji agar terlihat lebih menarik. gunakan tag <h5> sebagai heading untuk judul dan referensinya`
+    const messages = `${message}. Berikan respons yang atraktif dan menarik seperti manusia dalam format HTML 5, tetapi hanya gunakan tag <h5>, <span>, <p>, <i>, <strong> untuk cetak teks saja`
     const res = await api.post('/chat/completions', {
-        model: 'openai/gpt-oss-20b:free',
+        model: 'x-ai/grok-4.1-fast',
         messages: [
         { role: 'user', content: messages }
         ]

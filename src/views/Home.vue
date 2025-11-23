@@ -33,6 +33,7 @@ const typeWriter = (text, element, speed = 10) => {
 };
 
 const handleSubmit = async () => {
+    response.value = '';
     isLoading.value = true;
     const aiResponse = await send(message.value);
     console.log(aiResponse);
@@ -43,37 +44,71 @@ const handleSubmit = async () => {
 
 <template>
     <div class="container mt-5 pb-5 px-4">
-        <div class="text-center mt-5 pt-3">
-            <img src="https://img.freepik.com/free-vector/black-background-with-wavy-lines_52683-76524.jpg?semt=ais_hybrid&w=740&q=80" alt="dall-e" class="object-fit-cover rounded-circle bloom" width="90px" height="90px">
+        <div class="text-center mt-4 pt-1">
+            <i class="fs-22"><span class="bi bi-nvidia me-2"></span>Sonnet 3.1</i><br>
+            <img src="https://img.freepik.com/free-vector/black-background-with-wavy-lines_52683-76524.jpg?semt=ais_hybrid&w=740&q=80" alt="dall-e" class="object-fit-cover rounded-circle bloom mt-3" width="90px" height="90px">
             <h5 class="fw-bold mt-4 p-0">Selamat {{ greeting }}</h5>
-            <h5 class="fw-bold">Hoax apa yang lagi <span class="text-primary">trend saat ini ?</span></h5>
+            <h5 class="fw-bold">Apa yang ada <span class="text-primary">di pikiran Anda ?</span></h5>
         </div>
 
-        <div class="w-50 mx-auto mt-4">
+        <div :class="{'w-50 fixed-bottom-card shadow': isLoading, 'w-50 mx-auto mt-4': !isLoading}">
             <div class="card border-0 shadow-sm border-muted">
                 <div class="card-body d-flex pt-3">
                     <span class="bi bi-stars me-2 fs-21 pt-1"></span>
-                    <textarea v-model="message" @submit="handleSubmit" class="fs-21" rows="8" placeholder="Tempel teks disini untuk diperiksa kebenarannya" spellcheck="false"></textarea>
+                    <div class="w-100">
+                        <textarea v-model="message" @submit="handleSubmit" class="fs-21" :rows="{'8' : !isLoading, '3' : isLoading}" placeholder="Tulis perintah disini.." spellcheck="false"></textarea>
+                    </div>
                 </div>
                 <div class="card-footer border-0 p-2 bg-white">
-                    <button class="btn btn-sm btn-dark float-end mx-2 my-2 fs-9" @click="handleSubmit">Analisis <span class="bi bi-stars"></span></button>
+                    <button class="btn btn-sm btn-dark float-end mx-2 my-2 fs-9" @click="handleSubmit">   
+                        <span class="bi bi-stars"></span>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="w-50 mx-auto mt-5" v-if="isLoading">
+        <div class="w-50 mx-auto mt-5 pb-5" v-if="isLoading">
             <h6 class="fs-21 fw-bold p-0 m-0"><span class="bi bi-stars me-2"></span>Jawaban dari AI</h6><br>
             <div class="ai-response" :class="{ 'typing': isLoading }">
                 <span class="fs-21" v-html="response"></span>
                 <span class="cursor" :class="{ 'blinking': isLoading }"></span>
             </div>
         </div>
+        <br><br><br><br>
     </div>
 </template>
 
 <style scoped>
+.fixed-bottom-card {
+    position: fixed;
+    height: 94px;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    max-width: 50rem;
+    z-index: 1000;
+    animation: slideUp 0.3s ease-out;
+    margin: 0;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 100%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
 .fs-21{
     font-size: 13px;
+}
+.fs-22{
+    font-size: 10px;
 }
 .w-50{
     width: 100% !important;
@@ -122,8 +157,9 @@ textarea:focus{
 
 .cursor {
     display: inline-block;
-    width: 8px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
     background-color: #000;
     margin-left: 2px;
     vertical-align: middle;
