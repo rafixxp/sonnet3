@@ -5,6 +5,19 @@ import send from '../service'
 const message = ref('')
 const response = ref('')
 const isLoading = ref(false)
+const greeting = ref('')
+
+// Function to get appropriate greeting based on time
+const getGreeting = () => {
+    const hour = new Date().getHours()
+    if (hour < 11) return 'Pagi'
+    if (hour < 15) return 'Siang'
+    if (hour < 19) return 'Sore'
+    return 'Malam'
+}
+
+// Set initial greeting
+greeting.value = getGreeting()
 
 const typeWriter = (text, element, speed = 10) => {
     let i = 0;
@@ -32,7 +45,7 @@ const handleSubmit = async () => {
     <div class="container mt-5 pb-5 px-4">
         <div class="text-center mt-5 pt-3">
             <img src="https://img.freepik.com/free-vector/black-background-with-wavy-lines_52683-76524.jpg?semt=ais_hybrid&w=740&q=80" alt="dall-e" class="object-fit-cover rounded-circle bloom" width="90px" height="90px">
-            <h5 class="fw-bold mt-4 p-0">Selamat Malam</h5>
+            <h5 class="fw-bold mt-4 p-0">Selamat {{ greeting }}</h5>
             <h5 class="fw-bold">Hoax apa yang lagi <span class="text-primary">trend saat ini ?</span></h5>
         </div>
 
